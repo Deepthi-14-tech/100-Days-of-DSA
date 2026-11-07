@@ -1,0 +1,167 @@
+# 🚀 Day 4 – 100 Days of DSA Challenge
+
+## 📌 Overview
+
+Day 4 focused on Hashing, HashMap, HashSet, Anagrams, and Prefix Sum using Java.
+
+## 🧩 Problems Solved
+
+### 1. Two Sum – LeetCode #1 (Easy)
+
+[Problem Link](https://leetcode.com/problems/two-sum/)
+
+```java
+import java.util.HashMap;
+
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+
+            if (map.containsKey(complement)) {
+                return new int[]{map.get(complement), i};
+            }
+
+            map.put(nums[i], i);
+        }
+
+        return new int[]{};
+    }
+}
+```
+
+### 2. Contains Duplicate – LeetCode #217 (Easy)
+
+[Problem Link](https://leetcode.com/problems/contains-duplicate/)
+
+```java
+import java.util.HashSet;
+
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        HashSet<Integer> set = new HashSet<>();
+
+        for (int num : nums) {
+            if (set.contains(num)) {
+                return true;
+            }
+
+            set.add(num);
+        }
+
+        return false;
+    }
+}
+```
+
+### 3. Valid Anagram – LeetCode #242 (Easy)
+
+[Problem Link](https://leetcode.com/problems/valid-anagram/)
+
+```java
+class Solution {
+    public boolean isAnagram(String s, String t) {
+        if (s.length() != t.length()) {
+            return false;
+        }
+
+        int[] count = new int[26];
+
+        for (int i = 0; i < s.length(); i++) {
+            count[s.charAt(i) - 'a']++;
+            count[t.charAt(i) - 'a']--;
+        }
+
+        for (int value : count) {
+            if (value != 0) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+}
+```
+
+### 4. Group Anagrams – LeetCode #49 (Medium)
+
+[Problem Link](https://leetcode.com/problems/group-anagrams/)
+
+```java
+import java.util.*;
+
+class Solution {
+    public List<List<String>> groupAnagrams(String[] strs) {
+        HashMap<String, List<String>> map = new HashMap<>();
+
+        for (String word : strs) {
+            char[] chars = word.toCharArray();
+            Arrays.sort(chars);
+
+            String key = new String(chars);
+
+            map.putIfAbsent(key, new ArrayList<>());
+            map.get(key).add(word);
+        }
+
+        return new ArrayList<>(map.values());
+    }
+}
+```
+
+### 5. Subarray Sum Equals K – LeetCode #560 (Medium)
+
+[Problem Link](https://leetcode.com/problems/subarray-sum-equals-k/)
+
+```java
+import java.util.HashMap;
+
+class Solution {
+    public int subarraySum(int[] nums, int k) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        map.put(0, 1);
+
+        int prefixSum = 0;
+        int count = 0;
+
+        for (int num : nums) {
+            prefixSum += num;
+
+            int remaining = prefixSum - k;
+
+            if (map.containsKey(remaining)) {
+                count += map.get(remaining);
+            }
+
+            map.put(prefixSum,
+                map.getOrDefault(prefixSum, 0) + 1);
+        }
+
+        return count;
+    }
+}
+```
+
+## 💡 Concepts Learned
+
+- HashMap and HashSet
+- Key-value pairs
+- `put()`, `get()`, `containsKey()`
+- `contains()` and `add()`
+- Character frequency counting
+- Anagram grouping
+- Prefix Sum technique
+- `getOrDefault()`
+
+## 📊 Day 4 Progress
+
+**5/5 Problems Completed – All Accepted**
+
+Continuing my journey towards becoming better at Data Structures and Algorithms using Java!
+
+---
+
+⭐ Part of my #100DaysOfDSA Challenge.
