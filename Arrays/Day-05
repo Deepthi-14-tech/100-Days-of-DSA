@@ -1,0 +1,169 @@
+# 🚀 Day 5 – 100 Days of DSA Challenge
+
+
+## 📌 Overview
+
+Day 5 focused on String Manipulation, Two Pointers, String Searching, and StringBuilder using Java.
+
+## 🧩 Problems Solved
+
+### 1. Valid Palindrome – LeetCode #125 (Easy)
+
+[Problem Link](https://leetcode.com/problems/valid-palindrome/)
+
+```java
+class Solution {
+    public boolean isPalindrome(String s) {
+        int left = 0;
+        int right = s.length() - 1;
+
+        while (left < right) {
+            while (left < right &&
+                   !Character.isLetterOrDigit(s.charAt(left))) {
+                left++;
+            }
+
+            while (left < right &&
+                   !Character.isLetterOrDigit(s.charAt(right))) {
+                right--;
+            }
+
+            if (Character.toLowerCase(s.charAt(left)) !=
+                Character.toLowerCase(s.charAt(right))) {
+                return false;
+            }
+
+            left++;
+            right--;
+        }
+
+        return true;
+    }
+}
+```
+
+### 2. Longest Common Prefix – LeetCode #14 (Easy)
+
+[Problem Link](https://leetcode.com/problems/longest-common-prefix/)
+
+```java
+class Solution {
+    public String longestCommonPrefix(String[] strs) {
+        if (strs == null || strs.length == 0) {
+            return "";
+        }
+
+        String prefix = strs[0];
+
+        for (int i = 1; i < strs.length; i++) {
+            while (!strs[i].startsWith(prefix)) {
+                prefix = prefix.substring(0, prefix.length() - 1);
+
+                if (prefix.isEmpty()) {
+                    return "";
+                }
+            }
+        }
+
+        return prefix;
+    }
+}
+```
+
+### 3. Length of Last Word – LeetCode #58 (Easy)
+
+[Problem Link](https://leetcode.com/problems/length-of-last-word/)
+
+```java
+class Solution {
+    public int lengthOfLastWord(String s) {
+        int i = s.length() - 1;
+
+        while (i >= 0 && s.charAt(i) == ' ') {
+            i--;
+        }
+
+        int count = 0;
+
+        while (i >= 0 && s.charAt(i) != ' ') {
+            count++;
+            i--;
+        }
+
+        return count;
+    }
+}
+```
+
+### 4. Find the Index of the First Occurrence in a String – LeetCode #28 (Easy)
+
+[Problem Link](https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/)
+
+```java
+class Solution {
+    public int strStr(String haystack, String needle) {
+        int n = haystack.length();
+        int m = needle.length();
+
+        for (int i = 0; i <= n - m; i++) {
+            int j = 0;
+
+            while (j < m &&
+                   haystack.charAt(i + j) == needle.charAt(j)) {
+                j++;
+            }
+
+            if (j == m) {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+}
+```
+
+### 5. Reverse Words in a String – LeetCode #151 (Medium)
+
+[Problem Link](https://leetcode.com/problems/reverse-words-in-a-string/)
+
+```java
+class Solution {
+    public String reverseWords(String s) {
+        String[] words = s.trim().split("\\s+");
+
+        StringBuilder result = new StringBuilder();
+
+        for (int i = words.length - 1; i >= 0; i--) {
+            result.append(words[i]);
+
+            if (i > 0) {
+                result.append(" ");
+            }
+        }
+
+        return result.toString();
+    }
+}
+```
+
+## 💡 Concepts Learned
+
+- String Manipulation
+- Two Pointer Technique
+- `charAt()` and `length()`
+- `startsWith()` and `substring()`
+- String Traversal
+- String Searching
+- `split()` and `trim()`
+- StringBuilder
+
+## 📊 Day 5 Progress
+
+**5/5 Problems – Solutions documented**
+
+Continuing to improve my Java programming and problem-solving skills through consistent practice.
+
+---
+
+⭐ Part of my #100DaysOfDSA Challenge.
