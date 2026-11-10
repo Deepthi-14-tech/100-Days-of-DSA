@@ -1,0 +1,225 @@
+# Day 07 – Searching and Sorting (Java)
+
+**Challenge:** 100 Days of DSA  
+**Day:** 07  
+**Topics:** Binary Search, Three Pointers, Sorting  
+**Language:** Java
+
+---
+
+## 1. Sqrt(x) – LeetCode #69
+
+**Difficulty:** Easy
+
+**Concept:** Use Binary Search to find the integer square root without using `Math.sqrt()`.
+
+**Time Complexity:** O(log x)  
+**Space Complexity:** O(1)
+
+```java
+class Solution {
+    public int mySqrt(int x) {
+        int left = 0;
+        int right = x;
+        int answer = 0;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (mid == 0 || mid <= x / mid) {
+                answer = mid;
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return answer;
+    }
+}
+```
+
+[LeetCode Problem](https://leetcode.com/problems/sqrtx/)
+
+---
+
+## 2. Valid Perfect Square – LeetCode #367
+
+**Difficulty:** Easy
+
+**Concept:** Check whether a number is a perfect square using Binary Search.
+
+**Time Complexity:** O(log n)  
+**Space Complexity:** O(1)
+
+```java
+class Solution {
+    public boolean isPerfectSquare(int num) {
+        if (num < 1) return false;
+
+        int left = 1;
+        int right = num;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (mid == num / mid && num % mid == 0) {
+                return true;
+            } else if (mid > num / mid) {
+                right = mid - 1;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return false;
+    }
+}
+```
+
+[LeetCode Problem](https://leetcode.com/problems/valid-perfect-square/)
+
+---
+
+## 3. Find Minimum in Rotated Sorted Array – LeetCode #153
+
+**Difficulty:** Medium
+
+**Concept:** Compare the middle element with the rightmost element to find which half contains the minimum.
+
+**Time Complexity:** O(log n)  
+**Space Complexity:** O(1)
+
+```java
+class Solution {
+    public int findMin(int[] nums) {
+        int left = 0;
+        int right = nums.length - 1;
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] > nums[right]) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+
+        return nums[left];
+    }
+}
+```
+
+[LeetCode Problem](https://leetcode.com/problems/find-minimum-in-rotated-sorted-array/)
+
+---
+
+## 4. Find First and Last Position of Element in Sorted Array – LeetCode #34
+
+**Difficulty:** Medium
+
+**Concept:** Apply Binary Search twice to find the first and last positions of the target.
+
+**Time Complexity:** O(log n)  
+**Space Complexity:** O(1)
+
+```java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int first = findPosition(nums, target, true);
+        int last = findPosition(nums, target, false);
+
+        return new int[]{first, last};
+    }
+
+    private int findPosition(int[] nums, int target, boolean findFirst) {
+        int left = 0;
+        int right = nums.length - 1;
+        int answer = -1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            if (nums[mid] == target) {
+                answer = mid;
+
+                if (findFirst) {
+                    right = mid - 1;
+                } else {
+                    left = mid + 1;
+                }
+            } else if (nums[mid] < target) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+
+        return answer;
+    }
+}
+```
+
+[LeetCode Problem](https://leetcode.com/problems/find-first-and-last-position-of-element-in-sorted-array/)
+
+---
+
+## 5. Sort Colors – LeetCode #75
+
+**Difficulty:** Medium
+
+**Concept:** Use the Dutch National Flag algorithm with three pointers to sort 0s, 1s, and 2s.
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(1)
+
+```java
+class Solution {
+    public void sortColors(int[] nums) {
+        int low = 0;
+        int mid = 0;
+        int high = nums.length - 1;
+
+        while (mid <= high) {
+            if (nums[mid] == 0) {
+                int temp = nums[low];
+                nums[low] = nums[mid];
+                nums[mid] = temp;
+
+                low++;
+                mid++;
+            } else if (nums[mid] == 1) {
+                mid++;
+            } else {
+                int temp = nums[mid];
+                nums[mid] = nums[high];
+                nums[high] = temp;
+
+                high--;
+            }
+        }
+    }
+}
+```
+
+[LeetCode Problem](https://leetcode.com/problems/sort-colors/)
+
+---
+
+## Day 07 – Learning Outcomes
+
+- Practiced Binary Search on numerical ranges.
+- Learned to check perfect squares efficiently.
+- Understood searching in rotated sorted arrays.
+- Practiced finding first and last occurrences.
+- Learned the Dutch National Flag algorithm.
+- Improved problem-solving and optimization skills.
+
+**Total Problems:** 5
+
+**Language:** Java
+
+**Keep Learning. Keep Practicing. Keep Growing!**
+
+#100DaysOfDSA #Java #LeetCode #DSA #ProblemSolving
