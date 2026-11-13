@@ -1,0 +1,220 @@
+# Day 09 – Advanced Linked List (Java)
+
+**Challenge:** 100 Days of DSA  
+**Day:** 09  
+**Topic:** Linked List  
+**Language:** Java  
+**Total Problems:** 5
+
+---
+
+## 1. Remove Linked List Elements – LeetCode #203
+
+**Difficulty:** Easy
+
+**Concept:** Remove all nodes containing the given target value using a dummy node and pointer manipulation.
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(1)
+
+```java
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode current = dummy;
+
+        while (current.next != null) {
+            if (current.next.val == val) {
+                current.next = current.next.next;
+            } else {
+                current = current.next;
+            }
+        }
+
+        return dummy.next;
+    }
+}
+```
+
+[LeetCode Problem #203](https://leetcode.com/problems/remove-linked-list-elements/)
+
+---
+
+## 2. Remove Duplicates from Sorted List – LeetCode #83
+
+**Difficulty:** Easy
+
+**Concept:** Since the linked list is sorted, duplicate values appear next to each other. Skip duplicate nodes.
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(1)
+
+```java
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode current = head;
+
+        while (current != null && current.next != null) {
+            if (current.val == current.next.val) {
+                current.next = current.next.next;
+            } else {
+                current = current.next;
+            }
+        }
+
+        return head;
+    }
+}
+```
+
+[LeetCode Problem #83](https://leetcode.com/problems/remove-duplicates-from-sorted-list/)
+
+---
+
+## 3. Intersection of Two Linked Lists – LeetCode #160
+
+**Difficulty:** Easy
+
+**Concept:** Use two pointers. When a pointer reaches the end of one list, move it to the head of the other list. Both pointers eventually meet at the intersection node or at null.
+
+**Time Complexity:** O(m + n)  
+**Space Complexity:** O(1)
+
+```java
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        ListNode a = headA;
+        ListNode b = headB;
+
+        while (a != b) {
+            a = (a == null) ? headB : a.next;
+            b = (b == null) ? headA : b.next;
+        }
+
+        return a;
+    }
+}
+```
+
+[LeetCode Problem #160](https://leetcode.com/problems/intersection-of-two-linked-lists/)
+
+---
+
+## 4. Palindrome Linked List – LeetCode #234
+
+**Difficulty:** Easy
+
+**Concept:** Find the middle node, reverse the second half, and compare both halves to check whether the linked list is a palindrome.
+
+**Time Complexity:** O(n)  
+**Auxiliary Space Complexity:** O(1)
+
+```java
+class Solution {
+    public boolean isPalindrome(ListNode head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        ListNode secondHalf = reverse(slow.next);
+        ListNode firstHalf = head;
+
+        while (secondHalf != null) {
+            if (firstHalf.val != secondHalf.val) {
+                return false;
+            }
+
+            firstHalf = firstHalf.next;
+            secondHalf = secondHalf.next;
+        }
+
+        return true;
+    }
+
+    private ListNode reverse(ListNode head) {
+        ListNode prev = null;
+        ListNode current = head;
+
+        while (current != null) {
+            ListNode next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+
+        return prev;
+    }
+}
+```
+
+[LeetCode Problem #234](https://leetcode.com/problems/palindrome-linked-list/)
+
+---
+
+## 5. Remove Nth Node From End of List – LeetCode #19
+
+**Difficulty:** Medium
+
+**Concept:** Use two pointers with a gap of n nodes. Move both pointers until the fast pointer reaches the end, then remove the required node.
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(1)
+
+```java
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode fast = dummy;
+        ListNode slow = dummy;
+
+        for (int i = 0; i <= n; i++) {
+            fast = fast.next;
+        }
+
+        while (fast != null) {
+            fast = fast.next;
+            slow = slow.next;
+        }
+
+        slow.next = slow.next.next;
+
+        return dummy.next;
+    }
+}
+```
+
+[LeetCode Problem #19](https://leetcode.com/problems/remove-nth-node-from-end-of-list/)
+
+---
+
+## Day 09 – Learning Outcomes
+
+Through these five problems, I practiced:
+
+- Deleting nodes from a linked list.
+- Removing duplicate elements.
+- Finding the intersection of two linked lists.
+- Checking whether a linked list is a palindrome.
+- Removing the Nth node from the end.
+- Using dummy nodes and two-pointer techniques.
+- Understanding time and space complexity.
+
+**Language:** Java  
+**Problems Practiced:** 5  
+**Challenge:** 100 Days of DSA – Day 09
+
+**Keep Learning. Keep Practicing. Keep Growing!**
+
+#100DaysOfDSA #Java #LeetCode #LinkedList #DSA #ProblemSolving #CodingJourney
