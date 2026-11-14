@@ -1,0 +1,240 @@
+# Day 10 – Linked List Solutions (Java)
+
+## 1. LeetCode #2 – Add Two Numbers
+
+**Concepts:** Linked List Traversal, Dummy Node, Carry Handling
+
+```java
+class Solution {
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode dummy = new ListNode(0);
+        ListNode current = dummy;
+        int carry = 0;
+
+        while (l1 != null || l2 != null || carry != 0) {
+            int sum = carry;
+
+            if (l1 != null) {
+                sum += l1.val;
+                l1 = l1.next;
+            }
+
+            if (l2 != null) {
+                sum += l2.val;
+                l2 = l2.next;
+            }
+
+            carry = sum / 10;
+            current.next = new ListNode(sum % 10);
+            current = current.next;
+        }
+
+        return dummy.next;
+    }
+}
+```
+
+**Time Complexity:** O(max(m, n))  
+**Space Complexity:** O(max(m, n)) for the result list.
+
+---
+
+## 2. LeetCode #24 – Swap Nodes in Pairs
+
+**Concepts:** Dummy Node, Pointer Manipulation, Node Swapping
+
+```java
+class Solution {
+    public ListNode swapPairs(ListNode head) {
+        ListNode dummy = new ListNode(0);
+        dummy.next = head;
+
+        ListNode prev = dummy;
+
+        while (prev.next != null && prev.next.next != null) {
+            ListNode first = prev.next;
+            ListNode second = first.next;
+
+            first.next = second.next;
+            second.next = first;
+            prev.next = second;
+
+            prev = first;
+        }
+
+        return dummy.next;
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(1)
+
+---
+
+## 3. LeetCode #61 – Rotate List
+
+**Concepts:** Linked List Traversal, Circular Linked List, Modulo
+
+```java
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null || head.next == null || k == 0) {
+            return head;
+        }
+
+        ListNode tail = head;
+        int length = 1;
+
+        while (tail.next != null) {
+            tail = tail.next;
+            length++;
+        }
+
+        k = k % length;
+
+        if (k == 0) {
+            return head;
+        }
+
+        tail.next = head;
+
+        int steps = length - k;
+        ListNode newTail = tail;
+
+        while (steps > 0) {
+            newTail = newTail.next;
+            steps--;
+        }
+
+        ListNode newHead = newTail.next;
+        newTail.next = null;
+
+        return newHead;
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(1)
+
+---
+
+## 4. LeetCode #142 – Linked List Cycle II
+
+**Concepts:** Floyd's Cycle Detection, Fast and Slow Pointers
+
+```java
+public class Solution {
+    public ListNode detectCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return null;
+        }
+
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+
+            if (slow == fast) {
+                ListNode start = head;
+
+                while (start != slow) {
+                    start = start.next;
+                    slow = slow.next;
+                }
+
+                return start;
+            }
+        }
+
+        return null;
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(1)
+
+---
+
+## 5. LeetCode #143 – Reorder List
+
+**Concepts:** Slow and Fast Pointers, Linked List Reversal, Merging Two Lists
+
+```java
+class Solution {
+    public void reorderList(ListNode head) {
+        if (head == null || head.next == null) {
+            return;
+        }
+
+        // Find the middle of the list
+        ListNode slow = head;
+        ListNode fast = head;
+
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        // Reverse the second half
+        ListNode second = slow.next;
+        slow.next = null;
+
+        ListNode prev = null;
+
+        while (second != null) {
+            ListNode next = second.next;
+            second.next = prev;
+            prev = second;
+            second = next;
+        }
+
+        // Merge both halves
+        ListNode first = head;
+        second = prev;
+
+        while (second != null) {
+            ListNode next1 = first.next;
+            ListNode next2 = second.next;
+
+            first.next = second;
+            second.next = next1;
+
+            first = next1;
+            second = next2;
+        }
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(1)
+
+---
+
+## Day 10 – Summary
+
+| Problem | LeetCode | Main Concept |
+|---|---:|---|
+| Add Two Numbers | #2 | Carry Handling |
+| Swap Nodes in Pairs | #24 | Pointer Manipulation |
+| Rotate List | #61 | Circular Linked List |
+| Linked List Cycle II | #142 | Floyd's Algorithm |
+| Reorder List | #143 | Reverse and Merge |
+
+### What I Learned
+
+- Adding numbers using linked lists.
+- Swapping adjacent nodes without changing their values.
+- Rotating a linked list efficiently.
+- Detecting the starting node of a cycle.
+- Reordering a linked list using reversal and merging.
+
+**Repository:** https://github.com/Deepthi-14-tech/100-Days-of-DSA
+
+**Suggested file name:** `Day-10-Solutions.md`  
+**GitHub folder:** `LinkedList`
