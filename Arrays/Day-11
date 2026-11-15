@@ -1,0 +1,177 @@
+# Day 11 – Binary Tree Solutions (Java)
+
+## 1. LeetCode #144 – Binary Tree Preorder Traversal
+
+**Problem:** Return the preorder traversal of a binary tree.
+
+**Concept:** Root → Left → Right
+
+```java
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        preorder(root, result);
+        return result;
+    }
+
+    private void preorder(TreeNode root, List<Integer> result) {
+        if (root == null) {
+            return;
+        }
+
+        result.add(root.val);
+        preorder(root.left, result);
+        preorder(root.right, result);
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(n)
+
+---
+
+## 2. LeetCode #94 – Binary Tree Inorder Traversal
+
+**Problem:** Return the inorder traversal of a binary tree.
+
+**Concept:** Left → Root → Right
+
+```java
+class Solution {
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        inorder(root, result);
+        return result;
+    }
+
+    private void inorder(TreeNode root, List<Integer> result) {
+        if (root == null) {
+            return;
+        }
+
+        inorder(root.left, result);
+        result.add(root.val);
+        inorder(root.right, result);
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(n)
+
+---
+
+## 3. LeetCode #145 – Binary Tree Postorder Traversal
+
+**Problem:** Return the postorder traversal of a binary tree.
+
+**Concept:** Left → Right → Root
+
+```java
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        postorder(root, result);
+        return result;
+    }
+
+    private void postorder(TreeNode root, List<Integer> result) {
+        if (root == null) {
+            return;
+        }
+
+        postorder(root.left, result);
+        postorder(root.right, result);
+        result.add(root.val);
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(n)
+
+---
+
+## 4. LeetCode #104 – Maximum Depth of Binary Tree
+
+**Problem:** Find the maximum depth of a binary tree.
+
+**Concept:** Recursion, Tree Traversal
+
+```java
+class Solution {
+    public int maxDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int leftDepth = maxDepth(root.left);
+        int rightDepth = maxDepth(root.right);
+
+        return 1 + Math.max(leftDepth, rightDepth);
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(h), where h is the tree height.
+
+---
+
+## 5. LeetCode #226 – Invert Binary Tree
+
+**Problem:** Invert a binary tree by swapping its left and right children at every node.
+
+**Concept:** Recursion, Tree Traversal, Swapping Nodes
+
+```java
+class Solution {
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null) {
+            return null;
+        }
+
+        TreeNode temp = root.left;
+        root.left = root.right;
+        root.right = temp;
+
+        invertTree(root.left);
+        invertTree(root.right);
+
+        return root;
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(h), where h is the tree height.
+
+---
+
+# Day 11 – Concepts Learned
+
+1. Binary Tree structure
+2. Preorder Traversal
+3. Inorder Traversal
+4. Postorder Traversal
+5. Recursive Tree Traversal
+6. Finding Maximum Tree Depth
+7. Inverting a Binary Tree
+
+## Important Tree Traversal Summary
+
+| Traversal | Order |
+|---|---|
+| Preorder | Root → Left → Right |
+| Inorder | Left → Root → Right |
+| Postorder | Left → Right → Root |
+
+**GitHub Repository:**  
+https://github.com/Deepthi-14-tech/100-Days-of-DSA
+
+**File name:** `Day-11-Solutions.md`
+
+**Folder:** `BinaryTree`
+
+**Note:** LeetCode provides the `TreeNode` class and required imports. Submit each solution separately on its corresponding problem page.
