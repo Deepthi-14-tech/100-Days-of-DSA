@@ -1,0 +1,204 @@
+# Day 12 – Binary Tree Solutions (Java)
+
+## 1. LeetCode #100 – Same Tree
+
+**Problem:** Check whether two binary trees are identical in structure and node values.
+
+**Concepts:** Recursion, Tree Traversal
+
+```java
+class Solution {
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+
+        if (p == null && q == null) {
+            return true;
+        }
+
+        if (p == null || q == null) {
+            return false;
+        }
+
+        if (p.val != q.val) {
+            return false;
+        }
+
+        return isSameTree(p.left, q.left) &&
+               isSameTree(p.right, q.right);
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(h), where h is the tree height.
+
+---
+
+## 2. LeetCode #101 – Symmetric Tree
+
+**Problem:** Check whether a binary tree is a mirror of itself.
+
+**Concepts:** Recursion, Mirror Trees
+
+```java
+class Solution {
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null) {
+            return true;
+        }
+
+        return isMirror(root.left, root.right);
+    }
+
+    private boolean isMirror(TreeNode left, TreeNode right) {
+
+        if (left == null && right == null) {
+            return true;
+        }
+
+        if (left == null || right == null) {
+            return false;
+        }
+
+        if (left.val != right.val) {
+            return false;
+        }
+
+        return isMirror(left.left, right.right) &&
+               isMirror(left.right, right.left);
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(h)
+
+---
+
+## 3. LeetCode #112 – Path Sum
+
+**Problem:** Check whether the tree has a root-to-leaf path whose values add up to the target sum.
+
+**Concepts:** Recursion, DFS, Root-to-Leaf Traversal
+
+```java
+class Solution {
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+
+        if (root == null) {
+            return false;
+        }
+
+        if (root.left == null && root.right == null) {
+            return targetSum == root.val;
+        }
+
+        int remaining = targetSum - root.val;
+
+        return hasPathSum(root.left, remaining) ||
+               hasPathSum(root.right, remaining);
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(h)
+
+---
+
+## 4. LeetCode #110 – Balanced Binary Tree
+
+**Problem:** Check whether the height difference between the left and right subtrees of every node is at most 1.
+
+**Concepts:** Recursion, Tree Height, DFS
+
+```java
+class Solution {
+    public boolean isBalanced(TreeNode root) {
+        return checkHeight(root) != -1;
+    }
+
+    private int checkHeight(TreeNode root) {
+
+        if (root == null) {
+            return 0;
+        }
+
+        int left = checkHeight(root.left);
+
+        if (left == -1) {
+            return -1;
+        }
+
+        int right = checkHeight(root.right);
+
+        if (right == -1) {
+            return -1;
+        }
+
+        if (Math.abs(left - right) > 1) {
+            return -1;
+        }
+
+        return 1 + Math.max(left, right);
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(h)
+
+---
+
+## 5. LeetCode #543 – Diameter of Binary Tree
+
+**Problem:** Find the diameter of a binary tree. The diameter is the longest path between any two nodes, measured in edges.
+
+**Concepts:** DFS, Recursion, Tree Height
+
+```java
+class Solution {
+    int diameter = 0;
+
+    public int diameterOfBinaryTree(TreeNode root) {
+        height(root);
+        return diameter;
+    }
+
+    private int height(TreeNode root) {
+
+        if (root == null) {
+            return 0;
+        }
+
+        int left = height(root.left);
+        int right = height(root.right);
+
+        diameter = Math.max(diameter, left + right);
+
+        return 1 + Math.max(left, right);
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(h)
+
+---
+
+# Day 12 – Summary
+
+| Problem | LeetCode | Main Concept |
+|---|---:|---|
+| Same Tree | #100 | Recursion |
+| Symmetric Tree | #101 | Mirror Trees |
+| Path Sum | #112 | DFS |
+| Balanced Binary Tree | #110 | Tree Height |
+| Diameter of Binary Tree | #543 | DFS and Height |
+
+## Key Concepts Learned
+
+1. Comparing two binary trees.
+2. Checking mirror symmetry.
+3. Finding root-to-leaf paths.
+4. Checking tree balance.
+5. Calculating the diameter of a tree.
