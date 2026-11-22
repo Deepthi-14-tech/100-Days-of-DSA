@@ -1,0 +1,225 @@
+# Day 13 – Binary Tree Solutions (Java)
+
+## 1. LeetCode #102 – Binary Tree Level Order Traversal
+
+**Problem:** Return the values of a binary tree level by level, from left to right.
+
+**Concepts:** BFS, Queue, Level Order Traversal
+
+```java
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+
+        if (root == null) {
+            return result;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            List<Integer> level = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                level.add(node.val);
+
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+
+            result.add(level);
+        }
+
+        return result;
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(n)
+
+---
+
+## 2. LeetCode #111 – Minimum Depth of Binary Tree
+
+**Problem:** Find the minimum depth from the root node to the nearest leaf node.
+
+**Concepts:** Recursion, DFS, Tree Depth
+
+```java
+class Solution {
+    public int minDepth(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        if (root.left == null) {
+            return 1 + minDepth(root.right);
+        }
+
+        if (root.right == null) {
+            return 1 + minDepth(root.left);
+        }
+
+        return 1 + Math.min(
+            minDepth(root.left),
+            minDepth(root.right)
+        );
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(h), where h is the tree height.
+
+---
+
+## 3. LeetCode #404 – Sum of Left Leaves
+
+**Problem:** Find the sum of all left leaf nodes in a binary tree.
+
+**Concepts:** Recursion, Tree Traversal
+
+```java
+class Solution {
+    public int sumOfLeftLeaves(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int sum = 0;
+
+        if (root.left != null) {
+            if (root.left.left == null &&
+                root.left.right == null) {
+                sum += root.left.val;
+            } else {
+                sum += sumOfLeftLeaves(root.left);
+            }
+        }
+
+        sum += sumOfLeftLeaves(root.right);
+
+        return sum;
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(h)
+
+---
+
+## 4. LeetCode #199 – Binary Tree Right Side View
+
+**Problem:** Return the values of the nodes visible when looking at the tree from the right side.
+
+**Concepts:** BFS, Queue, Level Order Traversal
+
+```java
+class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+
+        if (root == null) {
+            return result;
+        }
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+
+                if (i == size - 1) {
+                    result.add(node.val);
+                }
+
+                if (node.left != null) {
+                    queue.offer(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.offer(node.right);
+                }
+            }
+        }
+
+        return result;
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(n)
+
+---
+## 5. LeetCode #222 – Count Complete Tree Nodes
+
+**Problem:** Count the total number of nodes in a complete binary tree.
+
+**Concepts:** Complete Binary Tree, Tree Height, Recursion, Bit Manipulation
+
+### Java Solution – Optimized
+
+```java
+class Solution {
+    public int countNodes(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        int leftHeight = getLeftHeight(root);
+        int rightHeight = getRightHeight(root);
+
+        if (leftHeight == rightHeight) {
+            return (1 << leftHeight) - 1;
+        }
+
+        return 1 + countNodes(root.left)
+                 + countNodes(root.right);
+    }
+
+    private int getLeftHeight(TreeNode node) {
+        int height = 0;
+
+        while (node != null) {
+            height++;
+            node = node.left;
+        }
+
+        return height;
+    }
+
+    private int getRightHeight(TreeNode node) {
+        int height = 0;
+
+        while (node != null) {
+            height++;
+            node = node.right;
+        }
+
+        return height;
+    }
+}
+```
+
+**Time Complexity:** O(log² n)  
+**Auxiliary Space:** O(log n) for recursion in the worst case.
+
+**Explanation:**
+1. Calculate the leftmost and rightmost heights.
+2. If both heights are equal, the tree is perfect.
+3. Calculate its node count using `2^height - 1`.
+4. Otherwise, recursively count the left and right subtrees.
