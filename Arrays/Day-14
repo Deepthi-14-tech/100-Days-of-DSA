@@ -1,0 +1,258 @@
+Day 14 – Binary Tree Solutions (Java)
+
+1. LeetCode #662 – Maximum Width of Binary Tree
+
+Problem: Find the maximum width of a binary tree, including the gaps between nodes.
+
+Concepts: BFS, Queue, Tree Indexing
+
+class Solution {
+    public int widthOfBinaryTree(TreeNode root) {
+        if (root == null) {
+            return 0;
+        }
+
+        Queue<Pair<TreeNode, Long>> queue = new LinkedList<>();
+        queue.offer(new Pair<>(root, 0L));
+
+        long maxWidth = 0;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            long minIndex = queue.peek().getValue();
+
+            long first = 0;
+            long last = 0;
+
+            for (int i = 0; i < size; i++) {
+                Pair<TreeNode, Long> pair = queue.poll();
+
+                TreeNode node = pair.getKey();
+                long index = pair.getValue() - minIndex;
+
+                if (i == 0) {
+                    first = index;
+                }
+
+                if (i == size - 1) {
+                    last = index;
+                }
+
+                if (node.left != null) {
+                    queue.offer(new Pair<>(node.left, 2 * index + 1));
+                }
+
+                if (node.right != null) {
+                    queue.offer(new Pair<>(node.right, 2 * index + 2));
+                }
+            }
+
+            maxWidth = Math.max(maxWidth, last - first + 1);
+        }
+
+        return (int) maxWidth;
+    }
+}
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+
+Note: Add import javafx.util.Pair; only if available in your Java environment. For LeetCode, a custom Pair class or two parallel queues is more portable.
+
+2. LeetCode #236 – Lowest Common Ancestor of a Binary Tree
+
+Problem: Find the lowest common ancestor of two given nodes in a binary tree.
+
+Concepts: DFS, Recursion, Tree Traversal
+
+class Solution {
+    public TreeNode lowestCommonAncestor(
+        TreeNode root, TreeNode p, TreeNode q) {
+
+        if (root == null || root == p || root == q) {
+            return root;
+        }
+
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+        if (left != null && right != null) {
+            return root;
+        }
+
+        return left != null ? left : right;
+    }
+}
+
+Time Complexity: O(n)
+Space Complexity: O(h)
+
+3. LeetCode #257 – Binary Tree Paths
+
+Problem: Return all root-to-leaf paths in a binary tree.
+
+Concepts: DFS, Backtracking, StringBuilder
+
+class Solution {
+    public List<String> binaryTreePaths(TreeNode root) {
+        List<String> result = new ArrayList<>();
+
+        if (root == null) {
+            return result;
+        }
+
+        findPaths(root, "", result);
+
+        return result;
+    }
+
+    private void findPaths(
+        TreeNode root, String path, List<String> result) {
+
+        if (root == null) {
+            return;
+        }
+
+        if (!path.isEmpty()) {
+            path += "->";
+        }
+
+        path += root.val;
+
+        if (root.left == null && root.right == null) {
+            result.add(path);
+            return;
+        }
+
+        findPaths(root.left, path, result);
+        findPaths(root.right, path, result);
+    }
+}
+
+Time Complexity: O(n × h) including path string construction
+Space Complexity: O(n × h) for the output paths; O(h) auxiliary recursion space.
+
+4. LeetCode #129 – Sum Root to Leaf Numbers
+
+Problem: Each root-to-leaf path represents a number. Return the sum of all these numbers.
+
+Concepts: DFS, Recursion, Number Construction
+
+class Solution {
+    public int sumNumbers(TreeNode root) {
+        return calculateSum(root, 0);
+    }
+
+    private int calculateSum(TreeNode root, int current) {
+        if (root == null) {
+            return 0;
+        }
+
+        current = current * 10 + root.val;
+
+        if (root.left == null && root.right == null) {
+            return current;
+        }
+
+        return calculateSum(root.left, current)
+             + calculateSum(root.right, current);
+    }
+}
+
+Time Complexity: O(n)
+Space Complexity: O(h)
+
+5. LeetCode #105 – Construct Binary Tree from Preorder and Inorder Traversal
+
+Problem: Construct a binary tree using its preorder and inorder traversal arrays.
+
+Concepts: Recursion, HashMap, Tree Construction
+
+class Solution {
+    private int preorderIndex = 0;
+    private Map<Integer, Integer> inorderMap = new HashMap<>();
+
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        preorderIndex = 0;
+        inorderMap.clear();
+
+        for (int i = 0; i < inorder.length; i++) {
+            inorderMap.put(inorder[i], i);
+        }
+
+        return build(preorder, 0, inorder.length - 1);
+    }
+
+    private TreeNode build(
+        int[] preorder, int left, int right) {
+
+        if (left > right) {
+            return null;
+        }
+
+        int value = preorder[preorderIndex++];
+        TreeNode root = new TreeNode(value);
+
+        int mid = inorderMap.get(value);
+
+        root.left = build(preorder, left, mid - 1);
+        root.right = build(preorder, mid + 1, right);
+
+        return root;
+    }
+}
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+
+Day 14 – Summary
+
+Problem
+
+LeetCode
+
+Main Concept
+
+Maximum Width
+
+#662
+
+BFS and Indexing
+
+Lowest Common Ancestor
+
+#236
+
+DFS
+
+Binary Tree Paths
+
+#257
+
+Backtracking
+
+Sum Root to Leaf Numbers
+
+#129
+
+DFS
+
+Construct Binary Tree
+
+#105
+
+Recursion and HashMap
+
+Key Concepts Learned
+
+Breadth First Search (BFS).
+
+Depth First Search (DFS).
+
+Lowest Common Ancestor.
+
+Root-to-leaf path traversal.
+
+Backtracking.
+
+Binary tree construction using traversal arrays.
