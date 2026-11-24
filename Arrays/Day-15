@@ -1,0 +1,227 @@
+# Day 15 – 100 Days of DSA Challenge
+
+**Language:** Java  
+**Topic:** Binary Trees  
+**Problems Solved:** 5
+
+---
+
+## 1. LeetCode 103 – Binary Tree Zigzag Level Order Traversal
+
+**Concepts:** BFS, Queue, Zigzag Traversal
+
+**Approach:** Traverse the tree level by level. Alternate between left-to-right and right-to-left insertion.
+
+```java
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) return result;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        boolean leftToRight = true;
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            LinkedList<Integer> level = new LinkedList<>();
+
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+
+                if (leftToRight) level.addLast(node.val);
+                else level.addFirst(node.val);
+
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+
+            result.add(level);
+            leftToRight = !leftToRight;
+        }
+        return result;
+    }
+}
+```
+
+**Time:** O(n)  
+**Space:** O(n)
+
+---
+
+## 2. LeetCode 107 – Binary Tree Level Order Traversal II
+
+**Concepts:** BFS, Queue, Level Order Traversal
+
+**Approach:** Traverse level by level and insert each level at the beginning of the result.
+
+```java
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        LinkedList<List<Integer>> result = new LinkedList<>();
+        if (root == null) return result;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            List<Integer> level = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                level.add(node.val);
+
+                if (node.left != null) queue.offer(node.left);
+                if (node.right != null) queue.offer(node.right);
+            }
+
+            result.addFirst(level);
+        }
+        return result;
+    }
+}
+```
+
+**Time:** O(n)  
+**Space:** O(n)
+
+---
+
+## 3. LeetCode 113 – Path Sum II
+
+**Concepts:** DFS, Backtracking, Root-to-Leaf Path
+
+**Approach:** Explore every root-to-leaf path. Store the path when its sum equals the target.
+
+```java
+class Solution {
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        List<List<Integer>> result = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+
+        findPaths(root, targetSum, 0, path, result);
+        return result;
+    }
+
+    private void findPaths(TreeNode node, int targetSum,
+                           int sum, List<Integer> path,
+                           List<List<Integer>> result) {
+        if (node == null) return;
+
+        path.add(node.val);
+        sum += node.val;
+
+        if (node.left == null && node.right == null
+                && sum == targetSum) {
+            result.add(new ArrayList<>(path));
+        } else {
+            findPaths(node.left, targetSum, sum, path, result);
+            findPaths(node.right, targetSum, sum, path, result);
+        }
+
+        path.remove(path.size() - 1);
+    }
+}
+```
+
+**Time:** O(n + total output size)  
+**Space:** O(h) auxiliary space, excluding the result.
+
+---
+
+## 4. LeetCode 116 – Populating Next Right Pointers in Each Node
+
+**Concepts:** BFS, Queue, Level Connections
+
+**Approach:** Connect each node to the next node at the same level. The input is a perfect binary tree.
+
+```java
+class Solution {
+    public Node connect(Node root) {
+        if (root == null) return null;
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            Node previous = null;
+
+            for (int i = 0; i < size; i++) {
+                Node current = queue.poll();
+
+                if (previous != null) {
+                    previous.next = current;
+                }
+
+                previous = current;
+
+                if (current.left != null) queue.offer(current.left);
+                if (current.right != null) queue.offer(current.right);
+            }
+
+            previous.next = null;
+        }
+        return root;
+    }
+}
+```
+
+**Time:** O(n)  
+**Space:** O(n)
+
+---
+
+## 5. LeetCode 117 – Populating Next Right Pointers in Each Node II
+
+**Concepts:** BFS, Queue, Level Connections
+
+**Approach:** Connect nodes at the same level, handling missing children in an arbitrary binary tree.
+
+```java
+class Solution {
+    public Node connect(Node root) {
+        if (root == null) return null;
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.offer(root);
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            Node previous = null;
+
+            for (int i = 0; i < size; i++) {
+                Node current = queue.poll();
+
+                if (previous != null) {
+                    previous.next = current;
+                }
+
+                previous = current;
+
+                if (current.left != null) queue.offer(current.left);
+                if (current.right != null) queue.offer(current.right);
+            }
+
+            previous.next = null;
+        }
+        return root;
+    }
+}
+```
+
+**Time:** O(n)  
+**Space:** O(n)
+
+---
+
+## Day 15 – Key Learnings
+
+- Practised Breadth-First Search (BFS).
+- Improved level-order traversal techniques.
+- Learned zigzag and bottom-up traversal.
+- Practised Depth-First Search (DFS) and backtracking.
+- Learned how to connect nodes at the same level.
+
+**Day 15 completed – 5 Binary Tree problems practised!**
