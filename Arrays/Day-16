@@ -1,0 +1,259 @@
+Day 16 – 100 Days of DSA Challenge
+
+Language: Java
+Topic: Binary Trees & Binary Search Trees (BST)
+Day: 16
+
+Today I practised 5 LeetCode problems focused on tree recursion, BST properties, traversal, and tree manipulation.
+
+1. LeetCode 124 – Binary Tree Maximum Path Sum
+
+Difficulty: Hard
+
+Concepts Covered:
+
+Depth-First Search (DFS)
+
+Recursion
+
+Maximum Gain
+
+Tree Traversal
+
+Approach:
+
+For each node, calculate the maximum gain from its left and right subtrees. Ignore negative gains. Update the global maximum with the path passing through the current node, and return the maximum one-sided gain to the parent.
+
+class Solution {
+    int maxSum = Integer.MIN_VALUE;
+
+    public int maxPathSum(TreeNode root) {
+        findMax(root);
+        return maxSum;
+    }
+
+    private int findMax(TreeNode node) {
+        if (node == null) return 0;
+
+        int left = Math.max(0, findMax(node.left));
+        int right = Math.max(0, findMax(node.right));
+
+        maxSum = Math.max(maxSum, node.val + left + right);
+
+        return node.val + Math.max(left, right);
+    }
+}
+
+Time Complexity: O(n) – Each node is visited once.
+
+Space Complexity: O(h) – Recursive stack, where h is the height of the tree.
+
+2. LeetCode 98 – Validate Binary Search Tree
+
+Difficulty: Medium
+
+Concepts Covered:
+
+DFS
+
+Recursion
+
+BST Properties
+
+Range Validation
+
+Approach:
+
+Validate each node against a minimum and maximum range. The left subtree must contain values smaller than the current node, and the right subtree must contain values greater than the current node. Using long avoids boundary issues with Integer.MIN_VALUE and Integer.MAX_VALUE.
+
+class Solution {
+    public boolean isValidBST(TreeNode root) {
+        return validate(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    private boolean validate(TreeNode node, long min, long max) {
+        if (node == null) return true;
+
+        if (node.val <= min || node.val >= max) {
+            return false;
+        }
+
+        return validate(node.left, min, node.val)
+            && validate(node.right, node.val, max);
+    }
+}
+
+Time Complexity: O(n) – Each node is visited once.
+
+Space Complexity: O(h) – Recursive stack.
+
+3. LeetCode 230 – Kth Smallest Element in a BST
+
+Difficulty: Medium
+
+Concepts Covered:
+
+Inorder Traversal
+
+DFS
+
+Recursion
+
+BST Properties
+
+Approach:
+
+Inorder traversal of a BST produces values in ascending order. Count the nodes during traversal and stop when the kth node is reached.
+
+class Solution {
+    int count = 0;
+    int answer = 0;
+
+    public int kthSmallest(TreeNode root, int k) {
+        inorder(root, k);
+        return answer;
+    }
+
+    private void inorder(TreeNode node, int k) {
+        if (node == null) return;
+
+        inorder(node.left, k);
+
+        count++;
+        if (count == k) {
+            answer = node.val;
+            return;
+        }
+
+        if (count < k) {
+            inorder(node.right, k);
+        }
+    }
+}
+
+Time Complexity: O(n) – Worst case.
+
+Space Complexity: O(h) – Recursive stack.
+
+4. LeetCode 235 – Lowest Common Ancestor of a Binary Search Tree
+
+Difficulty: Medium
+
+Concepts Covered:
+
+BST Properties
+
+Recursion
+
+Tree Traversal
+
+Approach:
+
+Use the BST property to locate the Lowest Common Ancestor (LCA).
+
+If both nodes are smaller than the current node, move left.
+
+If both nodes are larger, move right.
+
+Otherwise, the current node is the LCA.
+
+class Solution {
+    public TreeNode lowestCommonAncestor(
+        TreeNode root, TreeNode p, TreeNode q
+    ) {
+        if (root == null) return null;
+
+        if (p.val < root.val && q.val < root.val) {
+            return lowestCommonAncestor(root.left, p, q);
+        }
+
+        if (p.val > root.val && q.val > root.val) {
+            return lowestCommonAncestor(root.right, p, q);
+        }
+
+        return root;
+    }
+}
+
+Time Complexity: O(h) – Depends on the height of the tree.
+
+Space Complexity: O(h) – Recursive stack.
+
+5. LeetCode 450 – Delete Node in a BST
+
+Difficulty: Medium
+
+Concepts Covered:
+
+BST Properties
+
+Recursion
+
+Tree Manipulation
+
+Successor Node
+
+Approach:
+
+Find the node to delete.
+
+If the node has no children, return null.
+
+If it has one child, return that child.
+
+If it has two children, find the smallest node in the right subtree (inorder successor), replace the node's value, and delete the successor.
+
+class Solution {
+    public TreeNode deleteNode(TreeNode root, int key) {
+        if (root == null) return null;
+
+        if (key < root.val) {
+            root.left = deleteNode(root.left, key);
+        } else if (key > root.val) {
+            root.right = deleteNode(root.right, key);
+        } else {
+            if (root.left == null) return root.right;
+            if (root.right == null) return root.left;
+
+            TreeNode successor = findMin(root.right);
+            root.val = successor.val;
+            root.right = deleteNode(root.right, successor.val);
+        }
+
+        return root;
+    }
+
+    private TreeNode findMin(TreeNode node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
+}
+
+Time Complexity: O(h) – Searching and deleting depend on the tree height.
+
+Space Complexity: O(h) – Recursive stack.
+
+Key Concepts Learned Today
+
+Depth-First Search (DFS)
+
+Recursion in Binary Trees
+
+Binary Search Tree (BST) properties
+
+Inorder Traversal
+
+Range-based validation
+
+Kth smallest element
+
+Lowest Common Ancestor (LCA)
+
+BST node deletion
+
+Inorder successor
+
+Recursive stack space analysis
+
