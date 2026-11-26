@@ -1,0 +1,230 @@
+Today I practised 5 LeetCode problems focusing on BST traversal, searching, insertion, pruning, and construction.
+
+1. LeetCode 173 – Binary Search Tree Iterator
+
+Difficulty: Medium
+
+Concepts Covered:
+
+Inorder Traversal
+
+Stack
+
+Iterator Design
+
+BST Properties
+
+Approach:
+
+Use a stack to maintain the path to the next smallest node. Initially, push all left nodes. When next() is called, pop a node and push the left path of its right subtree.
+
+class BSTIterator {
+    Stack<TreeNode> stack = new Stack<>();
+
+    public BSTIterator(TreeNode root) {
+        pushLeft(root);
+    }
+
+    private void pushLeft(TreeNode node) {
+        while (node != null) {
+            stack.push(node);
+            node = node.left;
+        }
+    }
+
+    public int next() {
+        TreeNode node = stack.pop();
+        pushLeft(node.right);
+        return node.val;
+    }
+
+    public boolean hasNext() {
+        return !stack.isEmpty();
+    }
+}
+
+Time Complexity: O(1) amortized per operation.
+
+Space Complexity: O(h), where h is the height of the tree.
+
+2. LeetCode 669 – Trim a Binary Search Tree
+
+Difficulty: Medium
+
+Concepts Covered:
+
+BST Properties
+
+Recursion
+
+Tree Pruning
+
+DFS
+
+Approach:
+
+Remove nodes outside the range [low, high].
+
+If the node value is smaller than low, continue with its right subtree.
+
+If the node value is greater than high, continue with its left subtree.
+
+Otherwise, recursively trim both subtrees.
+
+class Solution {
+    public TreeNode trimBST(TreeNode root, int low, int high) {
+        if (root == null) return null;
+
+        if (root.val < low) {
+            return trimBST(root.right, low, high);
+        }
+
+        if (root.val > high) {
+            return trimBST(root.left, low, high);
+        }
+
+        root.left = trimBST(root.left, low, high);
+        root.right = trimBST(root.right, low, high);
+
+        return root;
+    }
+}
+
+Time Complexity: O(n) worst case.
+
+Space Complexity: O(h), recursive stack.
+
+3. LeetCode 700 – Search in a Binary Search Tree
+
+Difficulty: Easy
+
+Concepts Covered:
+
+BST Properties
+
+Recursion
+
+Searching
+
+Approach:
+
+Compare the target value with the current node. Move left if the target is smaller, move right if it is greater, and return the node if the value matches.
+
+class Solution {
+    public TreeNode searchBST(TreeNode root, int val) {
+        if (root == null || root.val == val) {
+            return root;
+        }
+
+        if (val < root.val) {
+            return searchBST(root.left, val);
+        }
+
+        return searchBST(root.right, val);
+    }
+}
+
+Time Complexity: O(h).
+
+Space Complexity: O(h), recursive stack.
+
+4. LeetCode 701 – Insert into a Binary Search Tree
+
+Difficulty: Medium
+
+Concepts Covered:
+
+BST Properties
+
+Recursion
+
+Insertion
+
+Tree Manipulation
+
+Approach:
+
+Find the correct position for the new value by comparing it with the current node. Insert the new node when a null position is reached.
+
+class Solution {
+    public TreeNode insertIntoBST(TreeNode root, int val) {
+        if (root == null) {
+            return new TreeNode(val);
+        }
+
+        if (val < root.val) {
+            root.left = insertIntoBST(root.left, val);
+        } else {
+            root.right = insertIntoBST(root.right, val);
+        }
+
+        return root;
+    }
+}
+
+Time Complexity: O(h).
+
+Space Complexity: O(h), recursive stack.
+
+5. LeetCode 108 – Convert Sorted Array to Binary Search Tree
+
+Difficulty: Easy
+
+Concepts Covered:
+
+Divide and Conquer
+
+Recursion
+
+BST Construction
+
+Balanced Binary Tree
+
+Approach:
+
+Choose the middle element of the sorted array as the root. Recursively construct the left and right subtrees using the left and right portions of the array.
+
+class Solution {
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return buildTree(nums, 0, nums.length - 1);
+    }
+
+    private TreeNode buildTree(int[] nums, int left, int right) {
+        if (left > right) return null;
+
+        int mid = left + (right - left) / 2;
+        TreeNode root = new TreeNode(nums[mid]);
+
+        root.left = buildTree(nums, left, mid - 1);
+        root.right = buildTree(nums, mid + 1, right);
+
+        return root;
+    }
+}
+
+Time Complexity: O(n).
+
+Space Complexity: O(log n) recursive stack for the balanced tree.
+
+Key Concepts Learned Today
+
+Inorder Traversal
+
+Stack and Iterator
+
+BST Searching
+
+BST Insertion
+
+Tree Pruning
+
+Recursion
+
+Divide and Conquer
+
+Balanced BST Construction
+
+Tree Height and Complexity Analysis
+
+
+#100DaysOfDSA #Java #LeetCode #DSA
