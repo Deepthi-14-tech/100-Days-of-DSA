@@ -1,0 +1,234 @@
+Day 18 – 100 Days of DSA Challenge
+
+Problems Solved
+
+95. Unique Binary Search Trees II
+
+96. Unique Binary Search Trees
+
+297. Serialize and Deserialize Binary Tree
+
+1008. Construct Binary Search Tree from Preorder Traversal
+
+538. Convert BST to Greater Tree
+
+1. Unique Binary Search Trees II – LeetCode 95
+
+Concepts: Recursion, BST, Divide and Conquer
+
+class Solution {
+    public List<TreeNode> generateTrees(int n) {
+        if (n == 0) return new ArrayList<>();
+        return build(1, n);
+    }
+
+    private List<TreeNode> build(int start, int end) {
+        List<TreeNode> result = new ArrayList<>();
+
+        if (start > end) {
+            result.add(null);
+            return result;
+        }
+
+        for (int i = start; i <= end; i++) {
+            List<TreeNode> left = build(start, i - 1);
+            List<TreeNode> right = build(i + 1, end);
+
+            for (TreeNode l : left) {
+                for (TreeNode r : right) {
+                    TreeNode root = new TreeNode(i);
+                    root.left = l;
+                    root.right = r;
+                    result.add(root);
+                }
+            }
+        }
+        return result;
+    }
+}
+
+Approach:
+
+Choose each number as the root.
+
+Recursively generate all possible left subtrees and right subtrees.
+
+Combine every left and right subtree with the selected root.
+
+Store all unique BSTs in the result.
+
+Time Complexity: Catalan-number growth (exponential output size).
+
+Space Complexity: Depends on the generated trees and recursion.
+
+2. Unique Binary Search Trees – LeetCode 96
+
+Concepts: Dynamic Programming, Catalan Numbers
+
+class Solution {
+    public int numTrees(int n) {
+        int[] dp = new int[n + 1];
+        dp[0] = 1;
+        dp[1] = 1;
+
+        for (int nodes = 2; nodes <= n; nodes++) {
+            for (int root = 1; root <= nodes; root++) {
+                dp[nodes] += dp[root - 1] * dp[nodes - root];
+            }
+        }
+
+        return dp[n];
+    }
+}
+
+Approach:
+
+dp[i] represents the number of unique BSTs with i nodes.
+
+Each number can be selected as the root.
+
+Calculate the combinations of left and right subtrees.
+
+Store the results using Dynamic Programming.
+
+Time Complexity: O(n²)
+
+Space Complexity: O(n)
+
+3. Serialize and Deserialize Binary Tree – LeetCode 297
+
+Concepts: Binary Tree, DFS, Recursion, Serialization
+
+public class Codec {
+    public String serialize(TreeNode root) {
+        StringBuilder sb = new StringBuilder();
+        preorder(root, sb);
+        return sb.toString();
+    }
+
+    private void preorder(TreeNode node, StringBuilder sb) {
+        if (node == null) {
+            sb.append("#,");
+            return;
+        }
+
+        sb.append(node.val).append(",");
+        preorder(node.left, sb);
+        preorder(node.right, sb);
+    }
+
+    public TreeNode deserialize(String data) {
+        Queue<String> queue = new LinkedList<>(
+            Arrays.asList(data.split(",", -1))
+        );
+        return build(queue);
+    }
+
+    private TreeNode build(Queue<String> queue) {
+        String value = queue.poll();
+
+        if (value.equals("#")) return null;
+
+        TreeNode node = new TreeNode(Integer.parseInt(value));
+        node.left = build(queue);
+        node.right = build(queue);
+
+        return node;
+    }
+}
+
+Approach:
+
+Serialize the tree using preorder traversal.
+
+Use # to represent null nodes.
+
+During deserialization, read each value from the queue.
+
+Reconstruct the tree recursively.
+
+Time Complexity: O(n) for serialization and deserialization.
+
+Space Complexity: O(n)
+
+4. Construct BST from Preorder Traversal – LeetCode 1008
+
+Concepts: BST, Recursion, Preorder Traversal
+
+class Solution {
+    private int index = 0;
+
+    public TreeNode bstFromPreorder(int[] preorder) {
+        index = 0;
+        return build(preorder, Long.MAX_VALUE);
+    }
+
+    private TreeNode build(int[] preorder, long bound) {
+        if (index == preorder.length || preorder[index] > bound) {
+            return null;
+        }
+
+        TreeNode root = new TreeNode(preorder[index++]);
+
+        root.left = build(preorder, root.val);
+        root.right = build(preorder, bound);
+
+        return root;
+    }
+}
+
+Approach:
+
+Use preorder traversal to construct the BST.
+
+Maintain an upper bound for each subtree.
+
+Construct the left subtree with the root value as the upper bound.
+
+Construct the right subtree with the inherited upper bound.
+
+Time Complexity: O(n)
+
+Space Complexity: O(h), where h is the height of the tree.
+
+5. Convert BST to Greater Tree – LeetCode 538
+
+Concepts: BST, Reverse Inorder Traversal, Recursion
+
+class Solution {
+    private int sum = 0;
+
+    public TreeNode convertBST(TreeNode root) {
+        sum = 0;
+        reverseInorder(root);
+        return root;
+    }
+
+    private void reverseInorder(TreeNode node) {
+        if (node == null) return;
+
+        reverseInorder(node.right);
+
+        sum += node.val;
+        node.val = sum;
+
+        reverseInorder(node.left);
+    }
+}
+
+Approach:
+Perform reverse inorder traversal (Right → Root → Left).
+Maintain a running sum.
+Add the current node's value to the running sum.
+Update the node with the accumulated sum.
+Time Complexity: O(n)
+Space Complexity: O(h)
+
+Key Concepts Learned
+Recursive tree generation
+Dynamic Programming
+Catalan numbers
+Serialization and deserialization
+BST construction from preorder
+Reverse inorder traversal
+Recursion and tree manipulation
