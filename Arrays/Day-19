@@ -1,0 +1,279 @@
+# Day 19 – 100 Days of DSA Challenge (Java)
+
+Today I practiced 5 LeetCode problems focusing on Binary Trees, DFS, BFS, recursion, and BST validation.
+
+## Problems Covered
+
+1. 863. All Nodes Distance K in Binary Tree
+2. 979. Distribute Coins in Binary Tree
+3. 814. Binary Tree Pruning
+4. 1325. Delete Leaves With a Given Value
+5. 1373. Maximum Sum BST in Binary Tree
+
+---
+
+## 1. All Nodes Distance K in Binary Tree (LeetCode 863)
+
+**Concepts:** BFS, Parent Mapping, HashMap, HashSet
+
+### Approach
+- Build a parent map for each tree node.
+- Starting from the target node, perform BFS.
+- Explore left child, right child and parent.
+- Use a visited set to avoid visiting nodes repeatedly.
+- Collect nodes at distance `k`.
+
+### Java Solution
+
+```java
+class Solution {
+    public List<Integer> distanceK(TreeNode root, TreeNode target, int k) {
+        Map<TreeNode, TreeNode> parent = new HashMap<>();
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+
+        while (!q.isEmpty()) {
+            TreeNode node = q.poll();
+
+            if (node.left != null) {
+                parent.put(node.left, node);
+                q.offer(node.left);
+            }
+
+            if (node.right != null) {
+                parent.put(node.right, node);
+                q.offer(node.right);
+            }
+        }
+
+        Queue<TreeNode> bfs = new LinkedList<>();
+        Set<TreeNode> visited = new HashSet<>();
+        bfs.offer(target);
+        visited.add(target);
+
+        int distance = 0;
+
+        while (!bfs.isEmpty()) {
+            if (distance == k) {
+                List<Integer> result = new ArrayList<>();
+                for (TreeNode node : bfs) {
+                    result.add(node.val);
+                }
+                return result;
+            }
+
+            int size = bfs.size();
+
+            for (int i = 0; i < size; i++) {
+                TreeNode node = bfs.poll();
+
+                TreeNode[] neighbors = {
+                    node.left, node.right, parent.get(node)
+                };
+
+                for (TreeNode next : neighbors) {
+                    if (next != null && visited.add(next)) {
+                        bfs.offer(next);
+                    }
+                }
+            }
+
+            distance++;
+        }
+
+        return new ArrayList<>();
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(n)
+
+---
+
+## 2. Distribute Coins in Binary Tree (LeetCode 979)
+
+**Concepts:** DFS, Postorder Traversal, Recursion
+
+### Approach
+- Each node should contain exactly one coin.
+- Calculate the excess coins or shortage from each subtree.
+- Transfer the excess to the parent node.
+- Count the total movements required.
+
+### Java Solution
+
+```java
+class Solution {
+    int moves = 0;
+
+    public int distributeCoins(TreeNode root) {
+        moves = 0;
+        dfs(root);
+        return moves;
+    }
+
+    private int dfs(TreeNode node) {
+        if (node == null) return 0;
+
+        int left = dfs(node.left);
+        int right = dfs(node.right);
+
+        moves += Math.abs(left) + Math.abs(right);
+
+        return node.val + left + right - 1;
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(h)
+
+---
+
+## 3. Binary Tree Pruning (LeetCode 814)
+
+**Concepts:** DFS, Recursion, Tree Pruning
+
+### Approach
+- Recursively process the left and right subtrees.
+- Remove leaf nodes containing zero.
+- Return the updated tree.
+
+### Java Solution
+
+```java
+class Solution {
+    public TreeNode pruneTree(TreeNode root) {
+        if (root == null) return null;
+
+        root.left = pruneTree(root.left);
+        root.right = pruneTree(root.right);
+
+        if (root.val == 0 && root.left == null
+            && root.right == null) {
+            return null;
+        }
+
+        return root;
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(h)
+
+---
+
+## 4. Delete Leaves With a Given Value (LeetCode 1325)
+
+**Concepts:** Postorder Traversal, DFS, Recursion
+
+### Approach
+- Recursively process the left and right subtrees.
+- After processing children, check whether the node is a leaf.
+- If the leaf value matches the target, remove it.
+- This also handles newly created leaves after deletion.
+
+### Java Solution
+
+```java
+class Solution {
+    public TreeNode removeLeafNodes(TreeNode root, int target) {
+        if (root == null) return null;
+
+        root.left = removeLeafNodes(root.left, target);
+        root.right = removeLeafNodes(root.right, target);
+
+        if (root.left == null && root.right == null
+            && root.val == target) {
+            return null;
+        }
+
+        return root;
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(h)
+
+---
+
+## 5. Maximum Sum BST in Binary Tree (LeetCode 1373)
+
+**Concepts:** Postorder DFS, BST Validation, Tree Recursion
+
+### Approach
+- Recursively calculate information about each subtree.
+- Check whether the current subtree is a valid BST.
+- Track the minimum, maximum and sum of the subtree.
+- Update the maximum BST sum whenever a valid BST is found.
+
+### Java Solution
+
+```java
+class Solution {
+    int maxSum = 0;
+
+    class Info {
+        boolean isBST;
+        int min, max, sum;
+
+        Info(boolean isBST, int min, int max, int sum) {
+            this.isBST = isBST;
+            this.min = min;
+            this.max = max;
+            this.sum = sum;
+        }
+    }
+
+    public int maxSumBST(TreeNode root) {
+        maxSum = 0;
+        dfs(root);
+        return maxSum;
+    }
+
+    private Info dfs(TreeNode node) {
+        if (node == null) {
+            return new Info(true, Integer.MAX_VALUE,
+                            Integer.MIN_VALUE, 0);
+        }
+
+        Info left = dfs(node.left);
+        Info right = dfs(node.right);
+
+        if (left.isBST && right.isBST
+            && node.val > left.max
+            && node.val < right.min) {
+
+            int sum = node.val + left.sum + right.sum;
+            maxSum = Math.max(maxSum, sum);
+
+            return new Info(
+                true,
+                Math.min(node.val, left.min),
+                Math.max(node.val, right.max),
+                sum
+            );
+        }
+
+        return new Info(false, 0, 0, 0);
+    }
+}
+```
+
+**Time Complexity:** O(n)  
+**Space Complexity:** O(h)
+
+---
+
+## Day 19 Key Learnings
+
+- Breadth-First Search (BFS)
+- Parent mapping in Binary Trees
+- Postorder Traversal
+- Recursive tree pruning
+- BST validation using subtree information
+- Tree-based problem-solving techniques
+
